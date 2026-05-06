@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>kopy.net — Yapay Zeka Asistanı</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #08080f;
+    --bg2: #0f0f1a;
+    --bg3: #161625;
+    --accent: #6c63ff;
+    --accent2: #a78bfa;
+    --text: #e8e8f0;
+    --muted: rgba(232,232,240,0.4);
+    --border: rgba(108,99,255,0.18);
+    --radius: 14px;
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(108,99,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(108,99,255,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Glow orb */
+  body::after {
+    content: '';
+    position: fixed;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(108,99,255,0.12) 0%, transparent 70%);
+    top: -200px; left: 50%; transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .layout {
+    position: relative; z-index: 1;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  /* Header */
+  header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 0 16px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .logo {
+    width: 42px; height: 42px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 18px; color: #fff;
+    box-shadow: 0 0 20px rgba(108,99,255,0.35);
+  }
+
+  .site-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 20px;
+    background: linear-gradient(90deg, #fff, var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  .tagline { font-size: 12px; color: var(--muted); margin-top: 1px; }
+
+  .header-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+
+  .mode-btn {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 12px; font-family: 'DM Sans', sans-serif;
+    padding: 6px 12px; border-radius: 20px; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .mode-btn.active, .mode-btn:hover {
+    background: rgba(108,99,255,0.15);
+    border-color: rgba(108,99,255,0.4);
+    color: var(--accent2);
+  }
+
+  /* Messages */
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(108,99,255,0.2) transparent;
+  }
+
+  /* Welcome screen */
+  .welcome {
+    flex: 1;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; gap: 16px;
+    padding: 40px 20px;
+  }
+
+  .welcome-icon {
+    width: 72px; height: 72px;
+    background: linear-gradient(135deg, rgba(108,99,255,0.2), rgba(167,139,250,0.1));
+    border: 1px solid rgba(108,99,255,0.3);
+    border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 30px;
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+
+  .welcome h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px; font-weight: 800;
+    background: linear-gradient(135deg, #fff 30%, var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  .welcome p { font-size: 15px; color: var(--muted); max-width: 380px; line-height: 1.7; }
+
+  .suggestions {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    justify-content: center; margin-top: 8px;
+  }
+
+  .sug {
+    background: rgba(108,99,255,0.1);
+    border: 1px solid rgba(108,99,255,0.25);
+    color: var(--accent2); font-size: 13px;
+    padding: 8px 16px; border-radius: 20px;
+    cursor: pointer; transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .sug:hover {
+    background: rgba(108,99,255,0.22);
+    border-color: rgba(108,99,255,0.5);
+    transform: translateY(-1px);
+  }
+
+  /* Message bubbles */
+  .msg { display: flex; gap: 12px; align-items: flex-start; animation: fadeUp 0.3s ease; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+  .msg.user { flex-direction: row-reverse; }
+
+  .avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 500; flex-shrink: 0;
+  }
+  .ai-av {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff; font-family: 'Syne', sans-serif; font-weight: 800;
+    box-shadow: 0 0 12px rgba(108,99,255,0.4);
+  }
+  .user-av {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--muted); font-size: 11px;
+  }
+
+  .bubble {
+    max-width: 72%; padding: 14px 18px;
+    border-radius: 16px; font-size: 15px; line-height: 1.65;
+  }
+  .ai-bubble {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-top-left-radius: 4px;
+  }
+  .user-bubble {
+    background: linear-gradient(135deg, var(--accent), #7c3aed);
+    color: #fff;
+    border-top-right-radius: 4px;
+  }
+
+  /* Image result */
+  .img-bubble {
+    max-width: 72%;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--bg2);
+  }
+  .img-bubble img {
+    width: 100%; display: block;
+    border-radius: 14px;
+  }
+  .img-caption {
+    padding: 10px 14px;
+    font-size: 12px; color: var(--muted);
+  }
+
+  /* Typing */
+  .typing { display: flex; gap: 5px; padding: 16px 18px; }
+  .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--accent); opacity: 0.4;
+    animation: pulse 1.2s ease infinite;
+  }
+  .dot:nth-child(2){animation-delay:.2s}
+  .dot:nth-child(3){animation-delay:.4s}
+  @keyframes pulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:1;transform:scale(1.25)}}
+
+  /* Image loading */
+  .img-loading {
+    padding: 20px 18px;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; color: var(--muted);
+  }
+  .img-loading span { animation: pulse 1.5s ease infinite; }
+
+  /* Input area */
+  .input-area {
+    flex-shrink: 0;
+    padding: 16px 0 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .input-box {
+    display: flex; gap: 10px; align-items: flex-end;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 10px 10px 16px;
+    transition: border-color 0.2s;
+  }
+  .input-box:focus-within {
+    border-color: rgba(108,99,255,0.5);
+    box-shadow: 0 0 0 3px rgba(108,99,255,0.08);
+  }
+
+  #userInput {
+    flex: 1; background: transparent; border: none; outline: none;
+    color: var(--text); font-size: 15px; font-family: 'DM Sans', sans-serif;
+    resize: none; min-height: 24px; max-height: 120px; line-height: 1.5;
+  }
+  #userInput::placeholder { color: var(--muted); }
+
+  .send-btn {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent), #7c3aed);
+    border: none; color: #fff; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: transform 0.15s, opacity 0.15s;
+    font-size: 16px;
+  }
+  .send-btn:hover { transform: scale(1.08); }
+  .send-btn:active { transform: scale(0.95); }
+  .send-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+
+  .input-hint {
+    text-align: center; margin-top: 10px;
+    font-size: 11px; color: rgba(232,232,240,0.2);
+  }
+
+  /* Responsive */
+  @media(max-width:600px) {
+    .bubble { max-width: 88%; font-size: 14px; }
+    .welcome h1 { font-size: 22px; }
+    header { padding: 14px 0 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+  <header>
+    <div class="logo">K</div>
+    <div>
+      <div class="site-name">kopy.net</div>
+      <div class="tagline">Yapay Zeka Asistanı</div>
+    </div>
+    <div class="header-right">
+      <button class="mode-btn active" id="btn-chat" onclick="setMode('chat')">💬 Sohbet</button>
+      <button class="mode-btn" id="btn-image" onclick="setMode('image')">🎨 Görsel Üret</button>
+    </div>
+  </header>
+
+  <div class="messages" id="messages">
+    <div class="welcome" id="welcome">
+      <div class="welcome-icon">🤖</div>
+      <h1>Merhaba! Size nasıl yardımcı olabilirim?</h1>
+      <p>Sohbet modunda sorularınızı sorun, Görsel Üret modunda hayal ettiğiniz görseli oluşturun.</p>
+      <div class="suggestions">
+        <span class="sug" onclick="suggest('Python nedir, nasıl öğrenebilirim?')">Python öğren</span>
+        <span class="sug" onclick="suggest('Bana kısa bir fıkra anlat')">Fıkra anlat</span>
+        <span class="sug" onclick="suggest('Yapay zeka nasıl çalışır?')">YZ nasıl çalışır?</span>
+        <span class="sug" onclick="suggest('İstanbul için 3 günlük gezi planı yap')">İstanbul gezisi</span>
+        <span class="sug" onclick="setModeAndSuggest('image','gün batımında İstanbul silüeti, dijital sanat')">🎨 Görsel üret</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="input-area">
+    <div class="input-box">
+      <textarea id="userInput" placeholder="Bir şeyler sorun veya görsel tarif edin..." rows="1"></textarea>
+      <button class="send-btn" id="sendBtn" onclick="send()" aria-label="Gönder">➤</button>
+    </div>
+    <div class="input-hint" id="hint">kopy.net &bull; Sohbet modu aktif &bull; Enter ile gönder</div>
+  </div>
+</div>
+
+<script>
+// =============================================
+// AYARLAR — Buraya API key'ini yazacaksın
+// Şimdilik boş, Adım 4'te dolduracağız
+// =============================================
+const PROXY_URL = '/api/chat'; // Adım 5'te Cloudflare Worker URL'si gelecek
+
+let mode = 'chat';
+let history = [];
+
+// Mod değiştir
+function setMode(m) {
+  mode = m;
+  document.getElementById('btn-chat').classList.toggle('active', m === 'chat');
+  document.getElementById('btn-image').classList.toggle('active', m === 'image');
+  const hint = document.getElementById('hint');
+  if (m === 'chat') {
+    document.getElementById('userInput').placeholder = 'Bir şeyler sorun...';
+    hint.textContent = 'kopy.net • Sohbet modu aktif • Enter ile gönder';
+  } else {
+    document.getElementById('userInput').placeholder = 'Görseli Türkçe veya İngilizce tarif edin...';
+    hint.textContent = 'kopy.net • Görsel üretme modu • Detaylı tarif = daha iyi sonuç';
+  }
+}
+
+function setModeAndSuggest(m, text) {
+  setMode(m);
+  document.getElementById('userInput').value = text;
+  send();
+}
+
+function suggest(text) {
+  document.getElementById('userInput').value = text;
+  send();
+}
+
+// Welcome ekranını kaldır
+function removeWelcome() {
+  const w = document.getElementById('welcome');
+  if (w) w.remove();
+}
+
+// Mesaj ekle
+function addMsg(text, role) {
+  removeWelcome();
+  const wrap = document.createElement('div');
+  wrap.className = 'msg ' + role;
+  const av = document.createElement('div');
+  av.className = 'avatar ' + (role === 'ai' ? 'ai-av' : 'user-av');
+  av.textContent = role === 'ai' ? 'K' : 'Sen';
+  const b = document.createElement('div');
+  b.className = 'bubble ' + (role === 'ai' ? 'ai-bubble' : 'user-bubble');
+  b.textContent = text;
+  wrap.appendChild(av);
+  wrap.appendChild(b);
+  document.getElementById('messages').appendChild(wrap);
+  scroll();
+  return b;
+}
+
+// Görsel mesaj ekle
+function addImageMsg(prompt, imgUrl) {
+  removeWelcome();
+  const wrap = document.createElement('div');
+  wrap.className = 'msg ai';
+  const av = document.createElement('div');
+  av.className = 'avatar ai-av'; av.textContent = 'K';
+  const box = document.createElement('div');
+  box.className = 'img-bubble';
+  const img = document.createElement('img');
+  img.src = imgUrl;
+  img.alt = prompt;
+  img.onerror = () => { box.innerHTML = '<div style="padding:16px;color:#f09595">Görsel yüklenemedi, tekrar deneyin.</div>'; };
+  const cap = document.createElement('div');
+  cap.className = 'img-caption';
+  cap.textContent = '🎨 ' + prompt;
+  box.appendChild(img);
+  box.appendChild(cap);
+  wrap.appendChild(av);
+  wrap.appendChild(box);
+  document.getElementById('messages').appendChild(wrap);
+  scroll();
+}
+
+// Typing göster
+function showTyping() {
+  removeWelcome();
+  const wrap = document.createElement('div');
+  wrap.className = 'msg ai'; wrap.id = 'typing';
+  const av = document.createElement('div');
+  av.className = 'avatar ai-av'; av.textContent = 'K';
+  const b = document.createElement('div');
+  b.className = 'bubble ai-bubble typing';
+  b.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+  wrap.appendChild(av); wrap.appendChild(b);
+  document.getElementById('messages').appendChild(wrap);
+  scroll();
+}
+
+// Görsel yükleniyor göster
+function showImgLoading() {
+  removeWelcome();
+  const wrap = document.createElement('div');
+  wrap.className = 'msg ai'; wrap.id = 'typing';
+  const av = document.createElement('div');
+  av.className = 'avatar ai-av'; av.textContent = 'K';
+  const b = document.createElement('div');
+  b.className = 'bubble ai-bubble img-loading';
+  b.innerHTML = '<span>🎨</span> Görsel oluşturuluyor, lütfen bekleyin...';
+  wrap.appendChild(av); wrap.appendChild(b);
+  document.getElementById('messages').appendChild(wrap);
+  scroll();
+}
+
+function removeTyping() {
+  const t = document.getElementById('typing');
+  if (t) t.remove();
+}
+
+function scroll() {
+  const m = document.getElementById('messages');
+  m.scrollTop = m.scrollHeight;
+}
+
+// Ana gönder fonksiyonu
+async function send() {
+  const input = document.getElementById('userInput');
+  const text = input.value.trim();
+  if (!text) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+  document.getElementById('sendBtn').disabled = true;
+
+  addMsg(text, 'user');
+
+  if (mode === 'image') {
+    await sendImage(text);
+  } else {
+    await sendChat(text);
+  }
+
+  document.getElementById('sendBtn').disabled = false;
+  input.focus();
+}
+
+// Sohbet modu
+async function sendChat(text) {
+  history.push({ role: 'user', content: text });
+  showTyping();
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: 'Sen kopy.net sitesinin yapay zeka asistanısın. Türkçe konuşan kullanıcılara yardım ediyorsun. Cevaplarını Türkçe ver, samimi, yardımsever ve öz ol.',
+        messages: history
+      })
+    });
+
+    const data = await res.json();
+    const reply = data.content?.map(c => c.text || '').join('') || 'Üzgünüm, bir hata oluştu.';
+    removeTyping();
+    addMsg(reply, 'ai');
+    history.push({ role: 'assistant', content: reply });
+  } catch(e) {
+    removeTyping();
+    addMsg('Bağlantı hatası. API ayarları henüz yapılmadı — Adım 4 ve 5 tamamlandıktan sonra çalışacak.', 'ai');
+  }
+}
+
+// Görsel üretme modu (Pollinations.ai — ücretsiz, API key gerekmez)
+async function sendImage(prompt) {
+  showImgLoading();
+
+  // Prompt'u URL için encode et
+  const encoded = encodeURIComponent(prompt);
+  const seed = Math.floor(Math.random() * 99999);
+  const imgUrl = `https://image.pollinations.ai/prompt/${encoded}?width=768&height=512&seed=${seed}&nologo=true`;
+
+  // Görselin yüklenmesini bekle
+  await new Promise(resolve => setTimeout(resolve, 2500));
+  removeTyping();
+  addImageMsg(prompt, imgUrl);
+}
+
+// Textarea otomatik büyüsün
+const ta = document.getElementById('userInput');
+ta.addEventListener('input', () => {
+  ta.style.height = 'auto';
+  ta.style.height = Math.min(ta.scrollHeight, 120) + 'px';
+});
+ta.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    send();
+  }
+});
+</script>
+</body>
+</html>
