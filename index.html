@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Chatai — Yapay Zeka Asistanı</title>
+<title>CHATAI — Yapay Zeka Asistanı</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
@@ -11,14 +11,14 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #0d0d1a;
-    --bg2: #14142a;
-    --bg3: #1c1c35;
+    --bg: #ffffff;
+    --bg2: #ffffff;
+    --bg3: #f3f4f6;
     --accent: #6c63ff;
-    --accent2: #a78bfa;
-    --text: #e8e8f0;
-    --muted: rgba(232,232,240,0.4);
-    --border: rgba(108,99,255,0.18);
+    --accent2: #7c3aed;
+    --text: #111111;
+    --muted: #6b7280;
+    --border: #e5e7eb;
     --radius: 14px;
   }
 
@@ -39,28 +39,8 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* Background grid */
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image:
-      linear-gradient(rgba(108,99,255,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(108,99,255,0.04) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* Glow orb */
-  body::after {
-    content: '';
-    position: fixed;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(108,99,255,0.12) 0%, transparent 70%);
-    top: -200px; left: 50%; transform: translateX(-50%);
-    pointer-events: none;
-    z-index: 0;
-  }
+  body::before { display: none; }
+  body::after { display: none; }
 
   .layout {
     position: relative; z-index: 1;
@@ -97,27 +77,27 @@
   .logo:hover { transform: scale(1.05); box-shadow: 0 0 28px rgba(108,99,255,0.5); }
 
   .close-btn {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: var(--muted);
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    color: #9ca3af;
     width: 30px; height: 30px; border-radius: 50%;
     display: none; align-items: center; justify-content: center;
     cursor: pointer; font-size: 16px; line-height: 1;
     transition: all 0.2s; flex-shrink: 0;
   }
-  .close-btn:hover { background: rgba(255,80,80,0.15); border-color: rgba(255,80,80,0.3); color: #ff6b6b; }
+  .close-btn:hover { background: #fee2e2; border-color: #fca5a5; color: #ef4444; }
   .close-btn.visible { display: flex; }
 
   .upload-btn {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    color: var(--muted);
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    color: #9ca3af;
     width: 38px; height: 38px; border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
     cursor: pointer; font-size: 18px; flex-shrink: 0;
     transition: all 0.2s;
   }
-  .upload-btn:hover { background: rgba(108,99,255,0.15); border-color: rgba(108,99,255,0.4); color: var(--accent2); }
+  .upload-btn:hover { background: #ede9fe; border-color: #c4b5fd; color: #7c3aed; }
 
   .file-preview {
     display: flex; align-items: center; gap: 8px;
@@ -130,30 +110,29 @@
   .file-preview img { width: 40px; height: 40px; object-fit: cover; border-radius: 6px; }
 
   .site-name {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800; font-size: 20px;
-    color: #ffffff;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600; font-size: 20px;
+    color: #111111;
   }
 
-  .tagline { font-size: 12px; color: var(--muted); margin-top: 1px; }
+  .tagline { font-size: 12px; color: #9ca3af; margin-top: 1px; }
 
   .header-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
 
   .mode-btn {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    color: var(--muted);
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    color: #6b7280;
     font-size: 12px; font-family: 'DM Sans', sans-serif;
     padding: 6px 12px; border-radius: 20px; cursor: pointer;
     transition: all 0.2s;
   }
   .mode-btn.active, .mode-btn:hover {
-    background: rgba(108,99,255,0.15);
-    border-color: rgba(108,99,255,0.4);
-    color: var(--accent2);
+    background: #ede9fe;
+    border-color: #c4b5fd;
+    color: #7c3aed;
   }
 
-  /* Messages */
   .messages {
     flex: 1;
     overflow-y: auto;
@@ -164,23 +143,24 @@
     gap: 16px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
-    scrollbar-color: rgba(108,99,255,0.2) transparent;
+    scrollbar-color: #e5e7eb transparent;
     min-height: 0;
+    background: #f9fafb;
   }
 
-  /* Welcome screen */
   .welcome {
     flex: 1;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     text-align: center; gap: 16px;
     padding: 40px 20px;
+    background: #f9fafb;
   }
 
   .welcome-icon {
     width: 72px; height: 72px;
-    background: linear-gradient(135deg, rgba(108,99,255,0.2), rgba(167,139,250,0.1));
-    border: 1px solid rgba(108,99,255,0.3);
+    background: #ede9fe;
+    border: 1px solid #c4b5fd;
     border-radius: 20px;
     display: flex; align-items: center; justify-content: center;
     font-size: 30px;
@@ -191,11 +171,11 @@
   .welcome h1 {
     font-family: 'DM Sans', sans-serif;
     font-size: 24px; font-weight: 500;
-    color: #ffffff;
+    color: #111111;
     line-height: 1.4;
   }
 
-  .welcome p { font-size: 15px; color: var(--muted); max-width: 380px; line-height: 1.7; }
+  .welcome p { font-size: 15px; color: #374151; max-width: 380px; line-height: 1.7; font-weight: 500; }
 
   .suggestions {
     display: flex; flex-wrap: wrap; gap: 8px;
@@ -203,17 +183,16 @@
   }
 
   .sug {
-    background: rgba(108,99,255,0.1);
-    border: 1px solid rgba(108,99,255,0.25);
-    color: var(--accent2); font-size: 13px;
+    background: #ede9fe;
+    border: 1px solid #c4b5fd;
+    color: #7c3aed; font-size: 13px; font-weight: 600;
     padding: 8px 16px; border-radius: 20px;
     cursor: pointer; transition: all 0.2s;
     font-family: 'DM Sans', sans-serif;
   }
   .sug:hover {
-    background: rgba(108,99,255,0.22);
-    border-color: rgba(108,99,255,0.5);
-    transform: translateY(-1px);
+    background: #ddd6fe;
+    border-color: #a78bfa;
   }
 
   /* Message bubbles */
@@ -233,9 +212,9 @@
     box-shadow: 0 0 12px rgba(108,99,255,0.4);
   }
   .user-av {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    color: var(--muted); font-size: 11px;
+    background: #e5e7eb;
+    border: 1px solid #d1d5db;
+    color: #6b7280;
   }
 
   .bubble {
@@ -243,9 +222,9 @@
     border-radius: 16px; font-size: 15px; line-height: 1.65;
   }
   .ai-bubble {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    color: var(--text);
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    color: #111111;
     border-top-left-radius: 4px;
   }
   .user-bubble {
@@ -274,8 +253,8 @@
   /* Typing */
   .typing { display: flex; gap: 5px; padding: 16px 18px; }
   .dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: var(--accent); opacity: 0.4;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #6c63ff; opacity: 0.5;
     animation: pulse 1.2s ease infinite;
   }
   .dot:nth-child(2){animation-delay:.2s}
@@ -300,14 +279,14 @@
 
   .input-box {
     display: flex; gap: 10px; align-items: flex-end;
-    background: var(--bg2);
-    border: 1px solid var(--border);
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
     border-radius: var(--radius);
     padding: 10px 10px 10px 16px;
     transition: border-color 0.2s;
   }
   .input-box:focus-within {
-    border-color: rgba(108,99,255,0.5);
+    border-color: #a78bfa;
     box-shadow: 0 0 0 3px rgba(108,99,255,0.08);
   }
 
@@ -333,7 +312,7 @@
 
   .input-hint {
     text-align: center; margin-top: 8px;
-    font-size: 11px; color: rgba(232,232,240,0.2);
+    font-size: 11px; color: #9ca3af;
   }
 
   @media(max-width: 500px) {
