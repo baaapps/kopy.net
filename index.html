@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>CHATAI — Yapay Zeka Asistanı</title>
+<title>kopy.net — Yapay Zeka Asistanı</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
@@ -323,15 +323,155 @@
     .input-hint { display: none; }
     header { padding: 12px 0 10px; }
   }
+
+  .sidebar {
+    position: fixed;
+    top: 0; bottom: 0;
+    width: calc((100vw - 860px) / 2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 20px 16px;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .sidebar-left { left: 0; background: linear-gradient(90deg, #f0f4ff 0%, #f8f9ff 100%); border-right: 1px solid #e8eeff; }
+  .sidebar-right { right: 0; background: linear-gradient(270deg, #f0f4ff 0%, #f8f9ff 100%); border-left: 1px solid #e8eeff; }
+  .sidebar svg.circuit { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.35; }
+  .fcard { background: #fff; border: 1px solid #e8eeff; border-radius: 12px; padding: 11px 13px; width: 100%; box-shadow: 0 2px 8px rgba(108,99,255,0.06); position: relative; z-index: 1; }
+  .fcard-head { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; }
+  .fcard-icon { width: 26px; height: 26px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+  .fcard-title { font-size: 11px; font-weight: 600; color: #111; }
+  .fcard-body { font-size: 10px; color: #9ca3af; line-height: 1.4; }
+  .fbubble { background: #ede9fe; border-radius: 10px; border-top-left-radius: 3px; padding: 9px 11px; font-size: 10px; color: #5b21b6; line-height: 1.5; width: 100%; position: relative; z-index: 1; }
+  .fbubble-white { background: #fff; border: 1px solid #e8eeff; border-radius: 10px; border-top-right-radius: 3px; padding: 9px 11px; font-size: 10px; color: #374151; line-height: 1.5; width: 100%; position: relative; z-index: 1; }
+  .fstat { background: #fff; border: 1px solid #e8eeff; border-radius: 10px; padding: 8px 12px; text-align: center; width: 100%; position: relative; z-index: 1; box-shadow: 0 2px 8px rgba(108,99,255,0.06); }
+  .fstat-num { font-size: 18px; font-weight: 700; color: #6c63ff; }
+  .fstat-label { font-size: 9px; color: #9ca3af; }
+  .fimg { background: #fff; border: 1px solid #e8eeff; border-radius: 10px; overflow: hidden; width: 100%; position: relative; z-index: 1; box-shadow: 0 2px 8px rgba(108,99,255,0.06); }
+  .fimg-ph { height: 55px; background: linear-gradient(135deg,#ede9fe,#ddd6fe); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  .fimg-label { padding: 5px 10px; font-size: 9px; color: #9ca3af; }
+  @media(max-width: 1100px) { .sidebar { display: none; } }
+
 </style>
 </head>
 <body>
+
+
+<!-- SOL PANEL -->
+<div class="sidebar sidebar-left">
+  <svg class="circuit" viewBox="0 0 200 800" xmlns="http://www.w3.org/2000/svg">
+    <line x1="0" y1="100" x2="160" y2="100" stroke="#818cf8" stroke-width="1"/>
+    <line x1="0" y1="220" x2="120" y2="220" stroke="#818cf8" stroke-width="0.7"/>
+    <line x1="0" y1="350" x2="140" y2="350" stroke="#818cf8" stroke-width="1"/>
+    <line x1="0" y1="480" x2="100" y2="480" stroke="#818cf8" stroke-width="0.7"/>
+    <line x1="0" y1="600" x2="160" y2="600" stroke="#818cf8" stroke-width="1"/>
+    <line x1="0" y1="700" x2="130" y2="700" stroke="#818cf8" stroke-width="0.7"/>
+    <line x1="50" y1="0" x2="50" y2="180" stroke="#818cf8" stroke-width="0.7"/>
+    <line x1="100" y1="0" x2="100" y2="160" stroke="#818cf8" stroke-width="1"/>
+    <line x1="150" y1="60" x2="150" y2="280" stroke="#818cf8" stroke-width="0.7"/>
+    <line x1="50" y1="400" x2="50" y2="800" stroke="#818cf8" stroke-width="0.7"/>
+    <line x1="100" y1="420" x2="100" y2="800" stroke="#818cf8" stroke-width="1"/>
+    <line x1="50" y1="100" x2="100" y2="100" stroke="#818cf8" stroke-width="0.7"/>
+    <line x1="100" y1="220" x2="150" y2="220" stroke="#818cf8" stroke-width="0.7"/>
+    <circle cx="50" cy="100" r="3" fill="#818cf8"/>
+    <circle cx="100" cy="100" r="2" fill="#818cf8"/>
+    <circle cx="100" cy="220" r="3" fill="#818cf8"/>
+    <circle cx="150" cy="220" r="2" fill="#818cf8"/>
+    <circle cx="50" cy="350" r="3" fill="#818cf8"/>
+    <circle cx="100" cy="480" r="2" fill="#818cf8"/>
+    <circle cx="50" cy="600" r="3" fill="#818cf8"/>
+    <rect x="30" y="300" width="40" height="24" rx="3" stroke="#818cf8" stroke-width="0.8" fill="none"/>
+    <line x1="38" y1="305" x2="38" y2="319" stroke="#818cf8" stroke-width="0.5"/>
+    <line x1="46" y1="305" x2="46" y2="319" stroke="#818cf8" stroke-width="0.5"/>
+    <line x1="54" y1="305" x2="54" y2="319" stroke="#818cf8" stroke-width="0.5"/>
+    <rect x="80" y="150" width="10" height="10" rx="2" stroke="#818cf8" stroke-width="0.7" fill="rgba(129,140,248,0.1)"/>
+    <rect x="120" y="420" width="10" height="10" rx="2" stroke="#818cf8" stroke-width="0.7" fill="rgba(129,140,248,0.1)"/>
+  </svg>
+  <div class="fbubble">Yapay zeka nedir? Anlat bana...</div>
+  <div class="fcard">
+    <div class="fcard-head">
+      <div class="fcard-icon" style="background:#ede9fe">🧠</div>
+      <div class="fcard-title">Akıllı Analiz</div>
+    </div>
+    <div class="fcard-body">Belgeni yükle, saniyeler içinde özet al</div>
+  </div>
+  <div class="fstat">
+    <div class="fstat-num">7/24</div>
+    <div class="fstat-label">Kesintisiz hizmet</div>
+  </div>
+  <div class="fcard">
+    <div class="fcard-head">
+      <div class="fcard-icon" style="background:#f0fdf4">💻</div>
+      <div class="fcard-title">Kod Yaz</div>
+    </div>
+    <div class="fcard-body">Her dilde kod üret ve açıkla</div>
+  </div>
+  <div class="fbubble" style="opacity:0.6">Python kodumu inceler misin?</div>
+</div>
+
+<!-- SAĞ PANEL -->
+<div class="sidebar sidebar-right">
+  <svg class="circuit" viewBox="0 0 200 800" xmlns="http://www.w3.org/2000/svg">
+    <line x1="40" y1="100" x2="200" y2="100" stroke="#818cf8" stroke-width="1"/>
+    <line x1="80" y1="220" x2="200" y2="220" stroke="#818cf8" stroke-width="0.7"/>
+    <line x1="60" y1="350" x2="200" y2="350" stroke="#818cf8" stroke-width="1"/>
+    <line x1="100" y1="480" x2="200" y2="480" stroke="#818cf8" stroke-width="0.7"/>
+    <line x1="40" y1="600" x2="200" y2="600" stroke="#818cf8" stroke-width="1"/>
+    <line x1="70" y1="700" x2="200" y2="700" stroke="#818cf8" stroke-width="0.7"/>
+    <line x1="150" y1="0" x2="150" y2="180" stroke="#818cf8" stroke-width="0.7"/>
+    <line x1="100" y1="0" x2="100" y2="160" stroke="#818cf8" stroke-width="1"/>
+    <line x1="50" y1="60" x2="50" y2="280" stroke="#818cf8" stroke-width="0.7"/>
+    <line x1="150" y1="400" x2="150" y2="800" stroke="#818cf8" stroke-width="0.7"/>
+    <line x1="100" y1="420" x2="100" y2="800" stroke="#818cf8" stroke-width="1"/>
+    <line x1="100" y1="100" x2="150" y2="100" stroke="#818cf8" stroke-width="0.7"/>
+    <line x1="50" y1="220" x2="100" y2="220" stroke="#818cf8" stroke-width="0.7"/>
+    <circle cx="150" cy="100" r="3" fill="#818cf8"/>
+    <circle cx="100" cy="100" r="2" fill="#818cf8"/>
+    <circle cx="100" cy="220" r="3" fill="#818cf8"/>
+    <circle cx="50" cy="220" r="2" fill="#818cf8"/>
+    <circle cx="150" cy="350" r="3" fill="#818cf8"/>
+    <circle cx="100" cy="480" r="2" fill="#818cf8"/>
+    <circle cx="150" cy="600" r="3" fill="#818cf8"/>
+    <rect x="130" y="300" width="40" height="24" rx="3" stroke="#818cf8" stroke-width="0.8" fill="none"/>
+    <line x1="138" y1="305" x2="138" y2="319" stroke="#818cf8" stroke-width="0.5"/>
+    <line x1="146" y1="305" x2="146" y2="319" stroke="#818cf8" stroke-width="0.5"/>
+    <line x1="154" y1="305" x2="154" y2="319" stroke="#818cf8" stroke-width="0.5"/>
+    <rect x="90" y="150" width="10" height="10" rx="2" stroke="#818cf8" stroke-width="0.7" fill="rgba(129,140,248,0.1)"/>
+    <rect x="60" y="420" width="10" height="10" rx="2" stroke="#818cf8" stroke-width="0.7" fill="rgba(129,140,248,0.1)"/>
+  </svg>
+  <div class="fimg">
+    <div class="fimg-ph">🎨</div>
+    <div class="fimg-label">AI görsel üretildi</div>
+  </div>
+  <div class="fbubble-white">İstanbul Boğazı gün batımı, yağlı boya...</div>
+  <div class="fcard">
+    <div class="fcard-head">
+      <div class="fcard-icon" style="background:#fef3c7">🌍</div>
+      <div class="fcard-title">50+ Dil</div>
+    </div>
+    <div class="fcard-body">Anında çeviri desteği</div>
+  </div>
+  <div class="fstat">
+    <div class="fstat-num">1M+</div>
+    <div class="fstat-label">Token desteği</div>
+  </div>
+  <div class="fcard">
+    <div class="fcard-head">
+      <div class="fcard-icon" style="background:#ede9fe">📎</div>
+      <div class="fcard-title">Dosya Analiz</div>
+    </div>
+    <div class="fcard-body">PDF, görsel yükle yorum al</div>
+  </div>
+</div>
 
 <div class="layout">
   <header>
     <div class="logo" onclick="goHome()" title="Ana sayfaya dön">K</div>
     <div onclick="goHome()" style="cursor:pointer">
-      <div class="site-name">ABADAİ</div>
+      <div class="site-name">kopy.net</div>
       <div class="tagline">Yapay Zeka Asistanı</div>
     </div>
     <div class="header-right">
@@ -343,8 +483,8 @@
 
   <div class="messages" id="messages">
     <div class="welcome" id="welcome">
-      <div class="welcome-icon">🤖</div>
-      <h1>Merhaba! Ben ABAD Size nasıl yardımcı olabilirim?</h1>
+      <div class="welcome-icon"><svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http:\/\/www.w3.org\/2000\/svg"><rect x="6" y="8" width="28" height="20" rx="8" fill="#7c3aed" opacity="0.12"\/><rect x="6" y="8" width="28" height="20" rx="8" stroke="#7c3aed" stroke-width="1.8"\/><path d="M12 32 L10 38 L18 34" fill="#7c3aed" opacity="0.8"\/><path d="M12 32 L10 38 L18 34" stroke="#7c3aed" stroke-width="1.5" stroke-linejoin="round"\/><circle cx="15" cy="18" r="2" fill="#6c63ff"\/><circle cx="22" cy="18" r="2" fill="#6c63ff"\/><circle cx="29" cy="18" r="2" fill="#6c63ff"\/><path d="M34 6 L35.2 9.8 L39 11 L35.2 12.2 L34 16 L32.8 12.2 L29 11 L32.8 9.8 Z" fill="#f59e0b"\/><\/svg></div>
+      <h1>Merhaba! Size nasıl yardımcı olabilirim?</h1>
       <p>Sohbet modunda sorularınızı sorun, Görsel Üret modunda hayal ettiğiniz görseli oluşturun.</p>
       <div class="suggestions">
         <span class="sug" onclick="suggest('Python nedir, nasıl öğrenebilirim?')">Python öğren</span>
@@ -391,8 +531,8 @@ function goHome() {
   uploadedFile = null;
   document.getElementById('messages').innerHTML = `
     <div class="welcome" id="welcome">
-      <div class="welcome-icon">🤖</div>
-      <h1>Merhaba! Ben ABAD Size nasıl yardımcı olabilirim?</h1>
+      <div class="welcome-icon"><svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http:\/\/www.w3.org\/2000\/svg"><rect x="6" y="8" width="28" height="20" rx="8" fill="#7c3aed" opacity="0.12"\/><rect x="6" y="8" width="28" height="20" rx="8" stroke="#7c3aed" stroke-width="1.8"\/><path d="M12 32 L10 38 L18 34" fill="#7c3aed" opacity="0.8"\/><path d="M12 32 L10 38 L18 34" stroke="#7c3aed" stroke-width="1.5" stroke-linejoin="round"\/><circle cx="15" cy="18" r="2" fill="#6c63ff"\/><circle cx="22" cy="18" r="2" fill="#6c63ff"\/><circle cx="29" cy="18" r="2" fill="#6c63ff"\/><path d="M34 6 L35.2 9.8 L39 11 L35.2 12.2 L34 16 L32.8 12.2 L29 11 L32.8 9.8 Z" fill="#f59e0b"\/><\/svg></div>
+      <h1>Merhaba! Size nasıl yardımcı olabilirim?</h1>
       <p>Sohbet modunda sorularınızı sorun, Görsel Üret modunda hayal ettiğiniz görseli oluşturun.</p>
       <div class="suggestions">
         <span class="sug" onclick="suggest('Python nedir, nasıl öğrenebilirim?')">Python öğren</span>
