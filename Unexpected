@@ -6,359 +6,198 @@
 <title>kopy.net — Yapay Zeka Asistanı</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --accent: #6c63ff;
+  --accent2: #7c3aed;
+  --border: #e5e7eb;
+}
+html { height: 100%; height: -webkit-fill-available; }
+body {
+  height: 100%; min-height: 100vh; min-height: -webkit-fill-available;
+  background: #fff; color: #111;
+  font-family: 'DM Sans', sans-serif;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
 
-  :root {
-    --bg: #ffffff;
-    --bg2: #ffffff;
-    --bg3: #f3f4f6;
-    --accent: #6c63ff;
-    --accent2: #7c3aed;
-    --text: #111111;
-    --muted: #6b7280;
-    --border: #e5e7eb;
-    --radius: 14px;
-  }
+/* Sidebar */
+.sidebar {
+  position: fixed; top: 0; bottom: 0;
+  width: calc((100vw - 860px) / 2);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 14px; padding: 20px 16px; z-index: 0; overflow: hidden;
+}
+.sidebar-left { left: 0; background: linear-gradient(90deg,#f0f4ff,#f8f9ff); border-right: 1px solid #e8eeff; }
+.sidebar-right { right: 0; background: linear-gradient(270deg,#f0f4ff,#f8f9ff); border-left: 1px solid #e8eeff; }
+.sidebar svg.circuit { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.35; }
+.fcard { background: #fff; border: 1px solid #e8eeff; border-radius: 12px; padding: 11px 13px; width: 100%; box-shadow: 0 2px 8px rgba(108,99,255,0.06); position: relative; z-index: 1; }
+.fcard-head { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; }
+.fcard-icon { width: 26px; height: 26px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+.fcard-title { font-size: 11px; font-weight: 600; color: #111; }
+.fcard-body { font-size: 10px; color: #9ca3af; line-height: 1.4; }
+.fbubble { background: #ede9fe; border-radius: 10px; border-top-left-radius: 3px; padding: 9px 11px; font-size: 10px; color: #5b21b6; line-height: 1.5; width: 100%; position: relative; z-index: 1; }
+.fbubble-white { background: #fff; border: 1px solid #e8eeff; border-radius: 10px; border-top-right-radius: 3px; padding: 9px 11px; font-size: 10px; color: #374151; line-height: 1.5; width: 100%; position: relative; z-index: 1; }
+.fstat { background: #fff; border: 1px solid #e8eeff; border-radius: 10px; padding: 8px 12px; text-align: center; width: 100%; position: relative; z-index: 1; }
+.fstat-num { font-size: 18px; font-weight: 700; color: #6c63ff; }
+.fstat-label { font-size: 9px; color: #9ca3af; }
+.fimg { background: #fff; border: 1px solid #e8eeff; border-radius: 10px; overflow: hidden; width: 100%; position: relative; z-index: 1; }
+.fimg-ph { height: 55px; background: linear-gradient(135deg,#ede9fe,#ddd6fe); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+.fimg-label { padding: 5px 10px; font-size: 9px; color: #9ca3af; }
+@media(max-width: 1100px) { .sidebar { display: none; } }
 
-  html {
-    height: 100%;
-    height: -webkit-fill-available;
-  }
-  body {
-    height: 100%;
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    overflow: hidden;
-    -webkit-text-size-adjust: 100%;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-  }
+/* Layout */
+.layout {
+  position: relative; z-index: 1;
+  height: 100vh; height: 100dvh;
+  display: flex; flex-direction: column;
+  max-width: 860px; margin: 0 auto; padding: 0 16px;
+}
 
-  body::before { display: none; }
-  body::after { display: none; }
+/* Header */
+header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 0 12px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.logo {
+  width: 38px; height: 38px; flex-shrink: 0;
+  background: linear-gradient(135deg,var(--accent),#a78bfa);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 16px; color: #fff;
+  cursor: pointer; transition: transform 0.15s;
+}
+.logo:hover { transform: scale(1.05); }
+.site-name { font-size: 16px; font-weight: 600; color: #111; cursor: pointer; }
+.tagline { font-size: 11px; color: #9ca3af; margin-top: 1px; }
+.header-right { margin-left: auto; display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+.mode-btn {
+  background: #f3f4f6; border: 1px solid var(--border);
+  color: #6b7280; font-size: 11px; font-family: 'DM Sans', sans-serif;
+  padding: 5px 10px; border-radius: 20px; cursor: pointer; transition: all 0.2s; white-space: nowrap;
+}
+.mode-btn.active { background: #ede9fe; border-color: #c4b5fd; color: var(--accent2); }
+.close-btn {
+  background: #f3f4f6; border: 1px solid var(--border); color: #9ca3af;
+  width: 30px; height: 30px; border-radius: 50%;
+  display: none; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 14px; transition: all 0.2s; flex-shrink: 0;
+}
+.close-btn:hover { background: #fee2e2; border-color: #fca5a5; color: #ef4444; }
+.close-btn.visible { display: flex; }
 
-  .layout {
-    position: relative; z-index: 1;
-    height: 100vh;
-    height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 0 16px;
-  }
+/* Messages */
+.messages {
+  flex: 1; overflow-y: auto; overflow-x: hidden;
+  padding: 20px 0 8px;
+  display: flex; flex-direction: column; gap: 16px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin; scrollbar-color: #e5e7eb transparent;
+  min-height: 0; background: #f9fafb;
+}
 
-  /* Header */
-  header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 20px 0 16px;
-    border-bottom: 1px solid var(--border);
-    flex-shrink: 0;
-  }
+/* Welcome */
+.welcome {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; gap: 16px; padding: 40px 20px;
+  background: #f9fafb;
+}
+.welcome-icon {
+  width: 72px; height: 72px;
+  background: #ede9fe; border: 1px solid #c4b5fd;
+  border-radius: 20px;
+  display: flex; align-items: center; justify-content: center;
+  animation: float 3s ease-in-out infinite;
+}
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+.welcome h1 { font-size: 22px; font-weight: 500; color: #111; line-height: 1.4; }
+.welcome p { font-size: 14px; color: #374151; font-weight: 500; max-width: 320px; line-height: 1.6; }
+.suggestions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 4px; }
+.sug {
+  background: #ede9fe; border: 1px solid #c4b5fd;
+  color: var(--accent2); font-size: 13px; font-weight: 600;
+  padding: 7px 14px; border-radius: 20px; cursor: pointer; transition: all 0.2s;
+}
+.sug:hover { background: #ddd6fe; }
 
-  .logo {
-    width: 42px; height: 42px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Syne', sans-serif;
-    font-weight: 800; font-size: 18px; color: #fff;
-    box-shadow: 0 0 20px rgba(108,99,255,0.35);
-    cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
-  }
-  .logo:hover { transform: scale(1.05); box-shadow: 0 0 28px rgba(108,99,255,0.5); }
+/* Messages */
+.msg { display: flex; gap: 10px; align-items: flex-start; animation: fadeUp 0.25s ease; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+.msg.user { flex-direction: row-reverse; }
+.avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; flex-shrink: 0; }
+.ai-av { background: linear-gradient(135deg,var(--accent),#a78bfa); color: #fff; font-size: 13px; font-weight: 700; }
+.user-av { background: #e5e7eb; border: 1px solid #d1d5db; color: #6b7280; }
+.bubble { max-width: 78%; padding: 12px 16px; border-radius: 16px; font-size: 14px; line-height: 1.65; word-break: break-word; }
+.ai-bubble { background: #fff; border: 1px solid var(--border); color: #111; border-top-left-radius: 4px; }
+.user-bubble { background: linear-gradient(135deg,var(--accent),var(--accent2)); color: #fff; border-top-right-radius: 4px; }
+.img-bubble { max-width: 78%; border-radius: 14px; overflow: hidden; border: 1px solid var(--border); background: #fff; }
+.img-bubble img { width: 100%; display: block; }
+.img-caption { padding: 8px 12px; font-size: 11px; color: #9ca3af; }
+.typing { display: flex; gap: 5px; padding: 14px 16px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); opacity: 0.4; animation: pulse 1.2s ease infinite; }
+.dot:nth-child(2){animation-delay:.2s} .dot:nth-child(3){animation-delay:.4s}
+@keyframes pulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
 
-  .close-btn {
-    background: #f3f4f6;
-    border: 1px solid #e5e7eb;
-    color: #9ca3af;
-    width: 30px; height: 30px; border-radius: 50%;
-    display: none; align-items: center; justify-content: center;
-    cursor: pointer; font-size: 16px; line-height: 1;
-    transition: all 0.2s; flex-shrink: 0;
-  }
-  .close-btn:hover { background: #fee2e2; border-color: #fca5a5; color: #ef4444; }
-  .close-btn.visible { display: flex; }
+/* Input */
+.input-area {
+  flex-shrink: 0; padding: 12px 0;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+  border-top: 1px solid var(--border);
+}
+.file-preview {
+  display: flex; align-items: center; gap: 8px;
+  background: #ede9fe; border: 1px solid #c4b5fd;
+  border-radius: 10px; padding: 6px 10px; margin-bottom: 8px;
+  font-size: 12px; color: var(--accent2);
+}
+.file-preview img { width: 36px; height: 36px; object-fit: cover; border-radius: 6px; }
+.file-preview .rm { cursor: pointer; color: #9ca3af; margin-left: auto; }
+.input-box {
+  display: flex; gap: 8px; align-items: flex-end;
+  background: #f9fafb; border: 1px solid var(--border);
+  border-radius: 14px; padding: 8px 8px 8px 14px; transition: border-color 0.2s;
+}
+.input-box:focus-within { border-color: #a78bfa; }
+.upload-btn {
+  background: #f3f4f6; border: 1px solid var(--border); color: #9ca3af;
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 16px; flex-shrink: 0; transition: all 0.2s;
+}
+.upload-btn:hover { background: #ede9fe; border-color: #c4b5fd; color: var(--accent2); }
+#userInput {
+  flex: 1; background: transparent; border: none; outline: none;
+  color: #111; font-size: 15px; font-family: 'DM Sans', sans-serif;
+  resize: none; min-height: 24px; max-height: 100px; line-height: 1.5;
+  -webkit-appearance: none;
+}
+#userInput::placeholder { color: #9ca3af; }
+#sendBtn {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: linear-gradient(135deg,var(--accent),var(--accent2));
+  border: none; color: #fff; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 15px; -webkit-appearance: none;
+}
+#sendBtn:active { opacity: 0.8; }
+#sendBtn:disabled { opacity: 0.35; }
+.input-hint { text-align: center; margin-top: 8px; font-size: 10px; color: #9ca3af; }
 
-  .upload-btn {
-    background: #f3f4f6;
-    border: 1px solid #e5e7eb;
-    color: #9ca3af;
-    width: 38px; height: 38px; border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; font-size: 18px; flex-shrink: 0;
-    transition: all 0.2s;
-  }
-  .upload-btn:hover { background: #ede9fe; border-color: #c4b5fd; color: #7c3aed; }
-
-  .file-preview {
-    display: flex; align-items: center; gap: 8px;
-    background: rgba(108,99,255,0.1);
-    border: 1px solid rgba(108,99,255,0.25);
-    border-radius: 10px; padding: 6px 10px;
-    margin-bottom: 8px; font-size: 12px; color: var(--accent2);
-  }
-  .file-preview .remove-file { cursor: pointer; color: var(--muted); margin-left: auto; }
-  .file-preview img { width: 40px; height: 40px; object-fit: cover; border-radius: 6px; }
-
-  .site-name {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 600; font-size: 20px;
-    color: #111111;
-  }
-
-  .tagline { font-size: 12px; color: #9ca3af; margin-top: 1px; }
-
-  .header-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
-
-  .mode-btn {
-    background: #f3f4f6;
-    border: 1px solid #e5e7eb;
-    color: #6b7280;
-    font-size: 12px; font-family: 'DM Sans', sans-serif;
-    padding: 6px 12px; border-radius: 20px; cursor: pointer;
-    transition: all 0.2s;
-  }
-  .mode-btn.active, .mode-btn:hover {
-    background: #ede9fe;
-    border-color: #c4b5fd;
-    color: #7c3aed;
-  }
-
-  .messages {
-    flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 20px 0 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: #e5e7eb transparent;
-    min-height: 0;
-    background: #f9fafb;
-  }
-
-  .welcome {
-    flex: 1;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    text-align: center; gap: 16px;
-    padding: 40px 20px;
-    background: #f9fafb;
-  }
-
-  .welcome-icon {
-    width: 72px; height: 72px;
-    background: #ede9fe;
-    border: 1px solid #c4b5fd;
-    border-radius: 20px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 30px;
-    animation: float 3s ease-in-out infinite;
-  }
-  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
-
-  .welcome h1 {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 24px; font-weight: 500;
-    color: #111111;
-    line-height: 1.4;
-  }
-
-  .welcome p { font-size: 15px; color: #374151; max-width: 380px; line-height: 1.7; font-weight: 500; }
-
-  .suggestions {
-    display: flex; flex-wrap: wrap; gap: 8px;
-    justify-content: center; margin-top: 8px;
-  }
-
-  .sug {
-    background: #ede9fe;
-    border: 1px solid #c4b5fd;
-    color: #7c3aed; font-size: 13px; font-weight: 600;
-    padding: 8px 16px; border-radius: 20px;
-    cursor: pointer; transition: all 0.2s;
-    font-family: 'DM Sans', sans-serif;
-  }
-  .sug:hover {
-    background: #ddd6fe;
-    border-color: #a78bfa;
-  }
-
-  /* Message bubbles */
-  .msg { display: flex; gap: 12px; align-items: flex-start; animation: fadeUp 0.3s ease; }
-  @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-
-  .msg.user { flex-direction: row-reverse; }
-
-  .avatar {
-    width: 34px; height: 34px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 500; flex-shrink: 0;
-  }
-  .ai-av {
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    color: #fff; font-family: 'Syne', sans-serif; font-weight: 800;
-    box-shadow: 0 0 12px rgba(108,99,255,0.4);
-  }
-  .user-av {
-    background: #e5e7eb;
-    border: 1px solid #d1d5db;
-    color: #6b7280;
-  }
-
-  .bubble {
-    max-width: 72%; padding: 14px 18px;
-    border-radius: 16px; font-size: 15px; line-height: 1.65;
-  }
-  .ai-bubble {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    color: #111111;
-    border-top-left-radius: 4px;
-  }
-  .user-bubble {
-    background: linear-gradient(135deg, var(--accent), #7c3aed);
-    color: #fff;
-    border-top-right-radius: 4px;
-  }
-
-  /* Image result */
-  .img-bubble {
-    max-width: 72%;
-    border-radius: 16px;
-    overflow: hidden;
-    border: 1px solid var(--border);
-    background: var(--bg2);
-  }
-  .img-bubble img {
-    width: 100%; display: block;
-    border-radius: 14px;
-  }
-  .img-caption {
-    padding: 10px 14px;
-    font-size: 12px; color: var(--muted);
-  }
-
-  /* Typing */
-  .typing { display: flex; gap: 5px; padding: 16px 18px; }
-  .dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: #6c63ff; opacity: 0.5;
-    animation: pulse 1.2s ease infinite;
-  }
-  .dot:nth-child(2){animation-delay:.2s}
-  .dot:nth-child(3){animation-delay:.4s}
-  @keyframes pulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:1;transform:scale(1.25)}}
-
-  /* Image loading */
-  .img-loading {
-    padding: 20px 18px;
-    display: flex; align-items: center; gap: 10px;
-    font-size: 13px; color: var(--muted);
-  }
-  .img-loading span { animation: pulse 1.5s ease infinite; }
-
-  /* Input area */
-  .input-area {
-    flex-shrink: 0;
-    padding: 12px 0;
-    padding-bottom: max(16px, env(safe-area-inset-bottom));
-    border-top: 1px solid var(--border);
-  }
-
-  .input-box {
-    display: flex; gap: 10px; align-items: flex-end;
-    background: #f9fafb;
-    border: 1px solid #e5e7eb;
-    border-radius: var(--radius);
-    padding: 10px 10px 10px 16px;
-    transition: border-color 0.2s;
-  }
-  .input-box:focus-within {
-    border-color: #a78bfa;
-    box-shadow: 0 0 0 3px rgba(108,99,255,0.08);
-  }
-
-  #userInput {
-    flex: 1; background: transparent; border: none; outline: none;
-    color: var(--text); font-size: 16px; font-family: 'DM Sans', sans-serif;
-    resize: none; min-height: 24px; max-height: 120px; line-height: 1.5;
-    -webkit-appearance: none;
-  }
-  #userInput::placeholder { color: var(--muted); }
-
-  #sendBtn {
-    width: 38px; height: 38px; border-radius: 10px;
-    background: linear-gradient(135deg, var(--accent), #7c3aed);
-    border: none; color: #fff; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; transition: transform 0.15s, opacity 0.15s;
-    font-size: 16px; -webkit-appearance: none;
-  }
-  #sendBtn:hover { transform: scale(1.08); }
-  #sendBtn:active { transform: scale(0.95); }
-  #sendBtn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
-
-  .input-hint {
-    text-align: center; margin-top: 8px;
-    font-size: 11px; color: #9ca3af;
-  }
-
-  @media(max-width: 500px) {
-    .tagline { display: none; }
-    .bubble { max-width: 86%; }
-    .welcome h1 { font-size: 20px; }
-    .welcome p { font-size: 13px; }
-    .input-hint { display: none; }
-    header { padding: 12px 0 10px; }
-  }
-
-  .sidebar {
-    position: fixed;
-    top: 0; bottom: 0;
-    width: calc((100vw - 860px) / 2);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 14px;
-    padding: 20px 16px;
-    z-index: 0;
-    overflow: hidden;
-  }
-  .sidebar-left { left: 0; background: linear-gradient(90deg, #f0f4ff 0%, #f8f9ff 100%); border-right: 1px solid #e8eeff; }
-  .sidebar-right { right: 0; background: linear-gradient(270deg, #f0f4ff 0%, #f8f9ff 100%); border-left: 1px solid #e8eeff; }
-  .sidebar svg.circuit { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.35; }
-  .fcard { background: #fff; border: 1px solid #e8eeff; border-radius: 12px; padding: 11px 13px; width: 100%; box-shadow: 0 2px 8px rgba(108,99,255,0.06); position: relative; z-index: 1; }
-  .fcard-head { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; }
-  .fcard-icon { width: 26px; height: 26px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
-  .fcard-title { font-size: 11px; font-weight: 600; color: #111; }
-  .fcard-body { font-size: 10px; color: #9ca3af; line-height: 1.4; }
-  .fbubble { background: #ede9fe; border-radius: 10px; border-top-left-radius: 3px; padding: 9px 11px; font-size: 10px; color: #5b21b6; line-height: 1.5; width: 100%; position: relative; z-index: 1; }
-  .fbubble-white { background: #fff; border: 1px solid #e8eeff; border-radius: 10px; border-top-right-radius: 3px; padding: 9px 11px; font-size: 10px; color: #374151; line-height: 1.5; width: 100%; position: relative; z-index: 1; }
-  .fstat { background: #fff; border: 1px solid #e8eeff; border-radius: 10px; padding: 8px 12px; text-align: center; width: 100%; position: relative; z-index: 1; box-shadow: 0 2px 8px rgba(108,99,255,0.06); }
-  .fstat-num { font-size: 18px; font-weight: 700; color: #6c63ff; }
-  .fstat-label { font-size: 9px; color: #9ca3af; }
-  .fimg { background: #fff; border: 1px solid #e8eeff; border-radius: 10px; overflow: hidden; width: 100%; position: relative; z-index: 1; box-shadow: 0 2px 8px rgba(108,99,255,0.06); }
-  .fimg-ph { height: 55px; background: linear-gradient(135deg,#ede9fe,#ddd6fe); display: flex; align-items: center; justify-content: center; font-size: 20px; }
-  .fimg-label { padding: 5px 10px; font-size: 9px; color: #9ca3af; }
-  @media(max-width: 1100px) { .sidebar { display: none; } }
-
+@media(max-width: 500px) {
+  .tagline { display: none; }
+  .bubble { max-width: 86%; }
+  .welcome h1 { font-size: 18px; }
+  .input-hint { display: none; }
+}
 </style>
 </head>
 <body>
-
 
 <!-- SOL PANEL -->
 <div class="sidebar sidebar-left">
@@ -368,7 +207,6 @@
     <line x1="0" y1="350" x2="140" y2="350" stroke="#818cf8" stroke-width="1"/>
     <line x1="0" y1="480" x2="100" y2="480" stroke="#818cf8" stroke-width="0.7"/>
     <line x1="0" y1="600" x2="160" y2="600" stroke="#818cf8" stroke-width="1"/>
-    <line x1="0" y1="700" x2="130" y2="700" stroke="#818cf8" stroke-width="0.7"/>
     <line x1="50" y1="0" x2="50" y2="180" stroke="#818cf8" stroke-width="0.7"/>
     <line x1="100" y1="0" x2="100" y2="160" stroke="#818cf8" stroke-width="1"/>
     <line x1="150" y1="60" x2="150" y2="280" stroke="#818cf8" stroke-width="0.7"/>
@@ -382,13 +220,10 @@
     <circle cx="150" cy="220" r="2" fill="#818cf8"/>
     <circle cx="50" cy="350" r="3" fill="#818cf8"/>
     <circle cx="100" cy="480" r="2" fill="#818cf8"/>
-    <circle cx="50" cy="600" r="3" fill="#818cf8"/>
     <rect x="30" y="300" width="40" height="24" rx="3" stroke="#818cf8" stroke-width="0.8" fill="none"/>
     <line x1="38" y1="305" x2="38" y2="319" stroke="#818cf8" stroke-width="0.5"/>
     <line x1="46" y1="305" x2="46" y2="319" stroke="#818cf8" stroke-width="0.5"/>
     <line x1="54" y1="305" x2="54" y2="319" stroke="#818cf8" stroke-width="0.5"/>
-    <rect x="80" y="150" width="10" height="10" rx="2" stroke="#818cf8" stroke-width="0.7" fill="rgba(129,140,248,0.1)"/>
-    <rect x="120" y="420" width="10" height="10" rx="2" stroke="#818cf8" stroke-width="0.7" fill="rgba(129,140,248,0.1)"/>
   </svg>
   <div class="fbubble">Yapay zeka nedir? Anlat bana...</div>
   <div class="fcard">
@@ -409,7 +244,6 @@
     </div>
     <div class="fcard-body">Her dilde kod üret ve açıkla</div>
   </div>
-  <div class="fbubble" style="opacity:0.6">Python kodumu inceler misin?</div>
 </div>
 
 <!-- SAĞ PANEL -->
@@ -420,7 +254,6 @@
     <line x1="60" y1="350" x2="200" y2="350" stroke="#818cf8" stroke-width="1"/>
     <line x1="100" y1="480" x2="200" y2="480" stroke="#818cf8" stroke-width="0.7"/>
     <line x1="40" y1="600" x2="200" y2="600" stroke="#818cf8" stroke-width="1"/>
-    <line x1="70" y1="700" x2="200" y2="700" stroke="#818cf8" stroke-width="0.7"/>
     <line x1="150" y1="0" x2="150" y2="180" stroke="#818cf8" stroke-width="0.7"/>
     <line x1="100" y1="0" x2="100" y2="160" stroke="#818cf8" stroke-width="1"/>
     <line x1="50" y1="60" x2="50" y2="280" stroke="#818cf8" stroke-width="0.7"/>
@@ -434,13 +267,10 @@
     <circle cx="50" cy="220" r="2" fill="#818cf8"/>
     <circle cx="150" cy="350" r="3" fill="#818cf8"/>
     <circle cx="100" cy="480" r="2" fill="#818cf8"/>
-    <circle cx="150" cy="600" r="3" fill="#818cf8"/>
     <rect x="130" y="300" width="40" height="24" rx="3" stroke="#818cf8" stroke-width="0.8" fill="none"/>
     <line x1="138" y1="305" x2="138" y2="319" stroke="#818cf8" stroke-width="0.5"/>
     <line x1="146" y1="305" x2="146" y2="319" stroke="#818cf8" stroke-width="0.5"/>
     <line x1="154" y1="305" x2="154" y2="319" stroke="#818cf8" stroke-width="0.5"/>
-    <rect x="90" y="150" width="10" height="10" rx="2" stroke="#818cf8" stroke-width="0.7" fill="rgba(129,140,248,0.1)"/>
-    <rect x="60" y="420" width="10" height="10" rx="2" stroke="#818cf8" stroke-width="0.7" fill="rgba(129,140,248,0.1)"/>
   </svg>
   <div class="fimg">
     <div class="fimg-ph">🎨</div>
@@ -458,18 +288,11 @@
     <div class="fstat-num">1M+</div>
     <div class="fstat-label">Token desteği</div>
   </div>
-  <div class="fcard">
-    <div class="fcard-head">
-      <div class="fcard-icon" style="background:#ede9fe">📎</div>
-      <div class="fcard-title">Dosya Analiz</div>
-    </div>
-    <div class="fcard-body">PDF, görsel yükle yorum al</div>
-  </div>
 </div>
 
 <div class="layout">
   <header>
-    <div class="logo" onclick="goHome()" title="Ana sayfaya dön">K</div>
+    <div class="logo" onclick="goHome()">K</div>
     <div onclick="goHome()" style="cursor:pointer">
       <div class="site-name">kopy.net</div>
       <div class="tagline">Yapay Zeka Asistanı</div>
@@ -477,30 +300,41 @@
     <div class="header-right">
       <button class="mode-btn active" id="btn-chat" onclick="setMode('chat')">💬 Sohbet</button>
       <button class="mode-btn" id="btn-image" onclick="setMode('image')">🎨 Görsel Üret</button>
-      <button class="close-btn" id="closeBtn" onclick="goHome()" title="Yeni konuşma">✕</button>
+      <button class="close-btn" id="closeBtn" onclick="goHome()">✕</button>
     </div>
   </header>
 
   <div class="messages" id="messages">
     <div class="welcome" id="welcome">
-      <div class="welcome-icon"><svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http:\/\/www.w3.org\/2000\/svg"><rect x="6" y="8" width="28" height="20" rx="8" fill="#7c3aed" opacity="0.12"\/><rect x="6" y="8" width="28" height="20" rx="8" stroke="#7c3aed" stroke-width="1.8"\/><path d="M12 32 L10 38 L18 34" fill="#7c3aed" opacity="0.8"\/><path d="M12 32 L10 38 L18 34" stroke="#7c3aed" stroke-width="1.5" stroke-linejoin="round"\/><circle cx="15" cy="18" r="2" fill="#6c63ff"\/><circle cx="22" cy="18" r="2" fill="#6c63ff"\/><circle cx="29" cy="18" r="2" fill="#6c63ff"\/><path d="M34 6 L35.2 9.8 L39 11 L35.2 12.2 L34 16 L32.8 12.2 L29 11 L32.8 9.8 Z" fill="#f59e0b"\/><\/svg></div>
+      <div class="welcome-icon">
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="8" width="28" height="20" rx="8" fill="#7c3aed" opacity="0.12"/>
+          <rect x="6" y="8" width="28" height="20" rx="8" stroke="#7c3aed" stroke-width="1.8"/>
+          <path d="M12 32 L10 38 L18 34" fill="#7c3aed" opacity="0.8"/>
+          <path d="M12 32 L10 38 L18 34" stroke="#7c3aed" stroke-width="1.5" stroke-linejoin="round"/>
+          <circle cx="15" cy="18" r="2" fill="#6c63ff"/>
+          <circle cx="22" cy="18" r="2" fill="#6c63ff"/>
+          <circle cx="29" cy="18" r="2" fill="#6c63ff"/>
+          <path d="M34 6 L35.2 9.8 L39 11 L35.2 12.2 L34 16 L32.8 12.2 L29 11 L32.8 9.8 Z" fill="#f59e0b"/>
+        </svg>
+      </div>
       <h1>Merhaba! Size nasıl yardımcı olabilirim?</h1>
-      <p>Sohbet modunda sorularınızı sorun, Görsel Üret modunda hayal ettiğiniz görseli oluşturun.</p>
+      <p>Sohbet modunda sorularınızı sorun, Görsel modunda hayal ettiğinizi oluşturun.</p>
       <div class="suggestions">
         <span class="sug" onclick="suggest('Python nedir, nasıl öğrenebilirim?')">Python öğren</span>
         <span class="sug" onclick="suggest('Bana kısa bir fıkra anlat')">Fıkra anlat</span>
         <span class="sug" onclick="suggest('Yapay zeka nasıl çalışır?')">YZ nasıl çalışır?</span>
         <span class="sug" onclick="suggest('İstanbul için 3 günlük gezi planı yap')">İstanbul gezisi</span>
-        <span class="sug" onclick="setModeAndSuggest('image','gün batımında İstanbul silüeti, dijital sanat')">🎨 Görsel üret</span>
+        <span class="sug" onclick="setModeAndSuggest('image','sunset over Istanbul skyline, digital art')">🎨 Görsel üret</span>
       </div>
     </div>
   </div>
 
   <div class="input-area">
     <div id="filePreview" style="display:none" class="file-preview">
-      <img id="previewImg" src="" alt=""> 
+      <img id="previewImg" src="" alt="" style="display:none">
       <span id="fileName"></span>
-      <span class="remove-file" onclick="removeFile()">✕</span>
+      <span class="rm" onclick="removeFile()">✕</span>
     </div>
     <div class="input-box">
       <label class="upload-btn" title="Dosya veya görsel yükle">
@@ -510,69 +344,91 @@
       <textarea id="userInput" placeholder="Bir şeyler sorun veya görsel tarif edin..." rows="1"></textarea>
       <button id="sendBtn" onclick="send()" aria-label="Gönder">➤</button>
     </div>
-    <div class="input-hint" id="hint">kopy.net &bull; Sohbet modu aktif &bull; Enter ile gönder</div>
+    <div class="input-hint" id="hint">kopy.net • Sohbet modu • Enter ile gönder</div>
   </div>
 </div>
 
 <script>
-// =============================================
-// AYARLAR — Buraya API key'ini yazacaksın
-// Şimdilik boş, Adım 4'te dolduracağız
-// =============================================
 const PROXY_URL = 'https://kopy-proxy.aseydah.workers.dev';
-
 let mode = 'chat';
 let history = [];
-let uploadedFile = null; // { base64, mediaType, name }
+let uploadedFile = null;
 
-// Ana sayfaya dön
+function setMode(m) {
+  mode = m;
+  document.getElementById('btn-chat').classList.toggle('active', m === 'chat');
+  document.getElementById('btn-image').classList.toggle('active', m === 'image');
+  const input = document.getElementById('userInput');
+  const hint = document.getElementById('hint');
+  if (m === 'chat') {
+    input.placeholder = 'Bir şeyler sorun...';
+    hint.textContent = 'kopy.net • Sohbet modu • Enter ile gönder';
+  } else {
+    input.placeholder = 'Görseli tarif edin...';
+    hint.textContent = 'kopy.net • Görsel modu • Detaylı tarif daha iyi sonuç verir';
+  }
+}
+
 function goHome() {
   history = [];
   uploadedFile = null;
-  document.getElementById('messages').innerHTML = `
-    <div class="welcome" id="welcome">
-      <div class="welcome-icon" id="welcomeIconPlaceholder"></div>
-      <h1>Merhaba!<br>Size nasıl yardımcı olabilirim?</h1>
-      <p>Sohbet modunda sorularınızı sorun, Görsel Üret modunda hayal ettiğiniz görseli oluşturun.</p>
-      <div class="suggestions">
-        <span class="sug" onclick="suggest('Python nedir, nasıl öğrenebilirim?')">Python öğren</span>
-        <span class="sug" onclick="suggest('Bana kısa bir fıkra anlat')">Fıkra anlat</span>
-        <span class="sug" onclick="suggest('Yapay zeka nasıl çalışır?')">YZ nasıl çalışır?</span>
-        <span class="sug" onclick="suggest('İstanbul için 3 günlük gezi planı yap')">İstanbul gezisi</span>
-        <span class="sug" onclick="setModeAndSuggest('image','gün batımında İstanbul silüeti, dijital sanat')">🎨 Görsel üret</span>
-      </div>
+  removeFile();
+  const msgs = document.getElementById('messages');
+  msgs.innerHTML = '';
+  const welcome = document.createElement('div');
+  welcome.className = 'welcome';
+  welcome.id = 'welcome';
+  welcome.innerHTML = `
+    <div class="welcome-icon">
+      <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="6" y="8" width="28" height="20" rx="8" fill="#7c3aed" opacity="0.12"/>
+        <rect x="6" y="8" width="28" height="20" rx="8" stroke="#7c3aed" stroke-width="1.8"/>
+        <path d="M12 32 L10 38 L18 34" fill="#7c3aed" opacity="0.8"/>
+        <path d="M12 32 L10 38 L18 34" stroke="#7c3aed" stroke-width="1.5" stroke-linejoin="round"/>
+        <circle cx="15" cy="18" r="2" fill="#6c63ff"/>
+        <circle cx="22" cy="18" r="2" fill="#6c63ff"/>
+        <circle cx="29" cy="18" r="2" fill="#6c63ff"/>
+        <path d="M34 6 L35.2 9.8 L39 11 L35.2 12.2 L34 16 L32.8 12.2 L29 11 L32.8 9.8 Z" fill="#f59e0b"/>
+      </svg>
+    </div>
+    <h1>Merhaba! Size nasıl yardımcı olabilirim?</h1>
+    <p>Sohbet modunda sorularınızı sorun, Görsel modunda hayal ettiğinizi oluşturun.</p>
+    <div class="suggestions">
+      <span class="sug" onclick="suggest('Python nedir, nasıl öğrenebilirim?')">Python öğren</span>
+      <span class="sug" onclick="suggest('Bana kısa bir fıkra anlat')">Fıkra anlat</span>
+      <span class="sug" onclick="suggest('Yapay zeka nasıl çalışır?')">YZ nasıl çalışır?</span>
+      <span class="sug" onclick="suggest('İstanbul için 3 günlük gezi planı yap')">İstanbul gezisi</span>
+      <span class="sug" onclick="setModeAndSuggest('image','sunset over Istanbul skyline, digital art')">🎨 Görsel üret</span>
     </div>`;
-  // Restore SVG icon
-  const ph = document.getElementById('welcomeIconPlaceholder');
-  if (ph) {
-    ph.className = 'welcome-icon';
-    ph.innerHTML = document.querySelector('.welcome-icon svg') ? document.querySelector('.welcome-icon svg').outerHTML : '🤖';
-  }
+  msgs.appendChild(welcome);
   document.getElementById('closeBtn').classList.remove('visible');
-  document.getElementById('filePreview').style.display = 'none';
-  document.getElementById('fileInput').value = '';
 }
 
-// Dosya yükleme
+function suggest(text) {
+  document.getElementById('userInput').value = text;
+  send();
+}
+
+function setModeAndSuggest(m, text) {
+  setMode(m);
+  document.getElementById('userInput').value = text;
+  send();
+}
+
 function handleFile(event) {
   const file = event.target.files[0];
   if (!file) return;
   const reader = new FileReader();
   reader.onload = (e) => {
     const base64 = e.target.result.split(',')[1];
-    const mediaType = file.type || 'image/jpeg';
-    uploadedFile = { base64, mediaType, name: file.name };
-    // Önizleme göster
+    uploadedFile = { base64, mediaType: file.type || 'image/jpeg', name: file.name };
     const preview = document.getElementById('filePreview');
     const previewImg = document.getElementById('previewImg');
-    const fileName = document.getElementById('fileName');
+    document.getElementById('fileName').textContent = file.name;
     preview.style.display = 'flex';
-    fileName.textContent = file.name;
     if (file.type.startsWith('image/')) {
       previewImg.src = e.target.result;
       previewImg.style.display = 'block';
-    } else {
-      previewImg.style.display = 'none';
     }
   };
   reader.readAsDataURL(file);
@@ -584,33 +440,6 @@ function removeFile() {
   document.getElementById('fileInput').value = '';
 }
 
-// Mod değiştir
-function setMode(m) {
-  mode = m;
-  document.getElementById('btn-chat').classList.toggle('active', m === 'chat');
-  document.getElementById('btn-image').classList.toggle('active', m === 'image');
-  const hint = document.getElementById('hint');
-  if (m === 'chat') {
-    document.getElementById('userInput').placeholder = 'Bir şeyler sorun...';
-    hint.textContent = 'kopy.net • Sohbet modu aktif • Enter ile gönder';
-  } else {
-    document.getElementById('userInput').placeholder = 'Görseli Türkçe veya İngilizce tarif edin...';
-    hint.textContent = 'kopy.net • Görsel üretme modu • Detaylı tarif = daha iyi sonuç';
-  }
-}
-
-function setModeAndSuggest(m, text) {
-  setMode(m);
-  document.getElementById('userInput').value = text;
-  send();
-}
-
-function suggest(text) {
-  document.getElementById('userInput').value = text;
-  send();
-}
-
-// Welcome ekranını kaldır
 function removeWelcome() {
   const w = document.getElementById('welcome');
   if (w) {
@@ -619,20 +448,17 @@ function removeWelcome() {
   }
 }
 
-// Basit markdown render
 function renderMarkdown(text) {
   return text
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(/### (.+)/g, '<strong style="font-size:15px;display:block;margin:8px 0 4px">$1</strong>')
-    .replace(/## (.+)/g, '<strong style="font-size:16px;display:block;margin:10px 0 4px">$1</strong>')
-    .replace(/# (.+)/g, '<strong style="font-size:17px;display:block;margin:10px 0 6px">$1</strong>')
+    .replace(/### (.+)/g, '<strong style="font-size:14px;display:block;margin:8px 0 3px">$1</strong>')
+    .replace(/## (.+)/g, '<strong style="font-size:15px;display:block;margin:10px 0 4px">$1</strong>')
+    .replace(/# (.+)/g, '<strong style="font-size:16px;display:block;margin:10px 0 5px">$1</strong>')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/`(.+?)`/g, '<code style="background:rgba(108,99,255,0.15);padding:1px 6px;border-radius:4px;font-size:13px">$1</code>')
     .replace(/\n/g, '<br>');
 }
 
-// Mesaj ekle
 function addMsg(text, role) {
   removeWelcome();
   const wrap = document.createElement('div');
@@ -651,10 +477,8 @@ function addMsg(text, role) {
   wrap.appendChild(b);
   document.getElementById('messages').appendChild(wrap);
   scroll();
-  return b;
 }
 
-// Görsel mesaj ekle
 function addImageMsg(prompt, imgUrl) {
   removeWelcome();
   const wrap = document.createElement('div');
@@ -664,45 +488,32 @@ function addImageMsg(prompt, imgUrl) {
   const box = document.createElement('div');
   box.className = 'img-bubble';
   const img = document.createElement('img');
-  img.src = imgUrl;
-  img.alt = prompt;
-  img.onerror = () => { box.innerHTML = '<div style="padding:16px;color:#f09595">Görsel yüklenemedi, tekrar deneyin.</div>'; };
+  img.src = imgUrl; img.alt = prompt;
+  img.onerror = () => { box.innerHTML = '<div style="padding:14px;color:#f09595;font-size:13px">Görsel yüklenemedi, tekrar deneyin.</div>'; };
   const cap = document.createElement('div');
   cap.className = 'img-caption';
   cap.textContent = '🎨 ' + prompt;
-  box.appendChild(img);
-  box.appendChild(cap);
-  wrap.appendChild(av);
-  wrap.appendChild(box);
+  box.appendChild(img); box.appendChild(cap);
+  wrap.appendChild(av); wrap.appendChild(box);
   document.getElementById('messages').appendChild(wrap);
   scroll();
 }
 
-// Typing göster
-function showTyping() {
+function showTyping(isImage) {
   removeWelcome();
   const wrap = document.createElement('div');
   wrap.className = 'msg ai'; wrap.id = 'typing';
   const av = document.createElement('div');
   av.className = 'avatar ai-av'; av.textContent = 'K';
   const b = document.createElement('div');
-  b.className = 'bubble ai-bubble typing';
-  b.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
-  wrap.appendChild(av); wrap.appendChild(b);
-  document.getElementById('messages').appendChild(wrap);
-  scroll();
-}
-
-// Görsel yükleniyor göster
-function showImgLoading() {
-  removeWelcome();
-  const wrap = document.createElement('div');
-  wrap.className = 'msg ai'; wrap.id = 'typing';
-  const av = document.createElement('div');
-  av.className = 'avatar ai-av'; av.textContent = 'K';
-  const b = document.createElement('div');
-  b.className = 'bubble ai-bubble img-loading';
-  b.innerHTML = '<span>🎨</span> Görsel oluşturuluyor, lütfen bekleyin...';
+  b.className = 'bubble ai-bubble';
+  if (isImage) {
+    b.style.cssText = 'font-size:13px;color:#9ca3af';
+    b.textContent = '🎨 Görsel oluşturuluyor...';
+  } else {
+    b.classList.add('typing');
+    b.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+  }
   wrap.appendChild(av); wrap.appendChild(b);
   document.getElementById('messages').appendChild(wrap);
   scroll();
@@ -718,60 +529,44 @@ function scroll() {
   setTimeout(() => { m.scrollTop = m.scrollHeight; }, 50);
 }
 
-// Mobilde klavye açılınca input görünsün
-window.visualViewport && window.visualViewport.addEventListener('resize', () => {
-  scroll();
-});
-
-// Ana gönder fonksiyonu
 async function send() {
   const input = document.getElementById('userInput');
   const text = input.value.trim();
   if (!text && !uploadedFile) return;
-
   input.value = '';
   input.style.height = 'auto';
   document.getElementById('sendBtn').disabled = true;
-
-  const displayText = text || (uploadedFile ? '📎 ' + uploadedFile.name : '');
-  addMsg(displayText, 'user');
-
+  addMsg(text || '📎 ' + (uploadedFile ? uploadedFile.name : ''), 'user');
   if (mode === 'image') {
     await sendImage(text);
   } else {
     await sendChat(text);
   }
-
   document.getElementById('sendBtn').disabled = false;
   input.focus();
 }
 
-// Sohbet modu
 async function sendChat(text) {
-  // Mesaj içeriği hazırla (dosya varsa ekle)
   let content;
   if (uploadedFile) {
     if (uploadedFile.mediaType.startsWith('image/')) {
       content = [
         { type: 'image', source: { type: 'base64', media_type: uploadedFile.mediaType, data: uploadedFile.base64 } },
-        { type: 'text', text: text || 'Bu görseli analiz et ve açıkla.' }
+        { type: 'text', text: text || 'Bu görseli analiz et ve Türkçe açıkla.' }
       ];
-    } else if (uploadedFile.mediaType === 'application/pdf') {
+    } else {
       content = [
         { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: uploadedFile.base64 } },
-        { type: 'text', text: text || 'Bu belgeyi özetle.' }
+        { type: 'text', text: text || 'Bu belgeyi Türkçe özetle.' }
       ];
     }
     uploadedFile = null;
-    document.getElementById('filePreview').style.display = 'none';
-    document.getElementById('fileInput').value = '';
+    removeFile();
   } else {
     content = text;
   }
-
   history.push({ role: 'user', content });
-  showTyping();
-
+  showTyping(false);
   try {
     const res = await fetch(PROXY_URL, {
       method: 'POST',
@@ -779,13 +574,12 @@ async function sendChat(text) {
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 1000,
-        system: 'Sen kopy.net sitesinin yapay zeka asistanısın. Türkçe konuşan kullanıcılara yardım ediyorsun. Cevaplarını Türkçe ver, samimi, yardımsever ve öz ol. Bilgi kesim tarihin 2025 başıdır, 2024 değil. OpenAI veya ChatGPT değil, Anthropic tarafından geliştirilen Claude modelisin. Markdown formatı kullanma, düz metin yaz. Başlık için ## kullanma, bold için ** kullanma.',
+        system: 'Sen kopy.net sitesinin yapay zeka asistanısın. Türkçe konuşan kullanıcılara yardım ediyorsun. Cevaplarını Türkçe ver, samimi ve yardımsever ol. Bilgi kesim tarihin 2025 başıdır. Kesinlikle markdown kullanma, ** işareti kullanma, ## işareti kullanma. Sadece düz Türkçe cümle yaz. Tıbbi belgeler, kan tahlilleri ve sağlık dokümanlarını analiz edebilirsin, genel bilgi amaçlı yorum yap.',
         messages: history
       })
     });
-
     const data = await res.json();
-    const reply = data.content?.map(c => c.text || '').join('') || 'Üzgünüm, bir hata oluştu.';
+    const reply = data.content ? data.content.map(c => c.text || '').join('') : 'Üzgünüm, bir hata oluştu.';
     removeTyping();
     addMsg(reply, 'ai');
     history.push({ role: 'assistant', content: reply });
@@ -795,11 +589,10 @@ async function sendChat(text) {
   }
 }
 
-// Görsel üretme modu (Pollinations.ai — ücretsiz, API key gerekmez)
 async function sendImage(prompt) {
-  showImgLoading();
+  showTyping(true);
   try {
-    const transRes = await fetch(PROXY_URL, {
+    const res = await fetch(PROXY_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -808,11 +601,11 @@ async function sendImage(prompt) {
         messages: [{ role: 'user', content: 'Translate this image prompt to English for an AI image generator. Reply ONLY with the translated prompt, nothing else: ' + prompt }]
       })
     });
-    const transData = await transRes.json();
-    const englishPrompt = transData.content?.[0]?.text?.trim() || prompt;
+    const data = await res.json();
+    const englishPrompt = (data.content ? data.content[0].text : prompt).trim();
     const encoded = encodeURIComponent(englishPrompt + ', high quality, detailed, 4k');
     const seed = Math.floor(Math.random() * 99999);
-    const imgUrl = `https://image.pollinations.ai/prompt/${encoded}?width=768&height=512&seed=${seed}&nologo=true`;
+    const imgUrl = 'https://image.pollinations.ai/prompt/' + encoded + '?width=768&height=512&seed=' + seed + '&nologo=true';
     removeTyping();
     addImageMsg(prompt, imgUrl);
   } catch(e) {
@@ -821,18 +614,15 @@ async function sendImage(prompt) {
   }
 }
 
-// Textarea otomatik büyüsün
 const ta = document.getElementById('userInput');
 ta.addEventListener('input', () => {
   ta.style.height = 'auto';
-  ta.style.height = Math.min(ta.scrollHeight, 120) + 'px';
+  ta.style.height = Math.min(ta.scrollHeight, 100) + 'px';
 });
 ta.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    send();
-  }
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
 });
+window.visualViewport && window.visualViewport.addEventListener('resize', () => { scroll(); });
 </script>
 </body>
 </html>
