@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>CHATAI — Yapay Zeka Asistanı</title>
+<title>kopy.net — Yapay Zeka Asistanı</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
@@ -471,7 +471,7 @@
   <header>
     <div class="logo" onclick="goHome()" title="Ana sayfaya dön">K</div>
     <div onclick="goHome()" style="cursor:pointer">
-      <div class="site-name">ABADAİ</div>
+      <div class="site-name">kopy.net</div>
       <div class="tagline">Yapay Zeka Asistanı</div>
     </div>
     <div class="header-right">
@@ -484,7 +484,7 @@
   <div class="messages" id="messages">
     <div class="welcome" id="welcome">
       <div class="welcome-icon"><svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http:\/\/www.w3.org\/2000\/svg"><rect x="6" y="8" width="28" height="20" rx="8" fill="#7c3aed" opacity="0.12"\/><rect x="6" y="8" width="28" height="20" rx="8" stroke="#7c3aed" stroke-width="1.8"\/><path d="M12 32 L10 38 L18 34" fill="#7c3aed" opacity="0.8"\/><path d="M12 32 L10 38 L18 34" stroke="#7c3aed" stroke-width="1.5" stroke-linejoin="round"\/><circle cx="15" cy="18" r="2" fill="#6c63ff"\/><circle cx="22" cy="18" r="2" fill="#6c63ff"\/><circle cx="29" cy="18" r="2" fill="#6c63ff"\/><path d="M34 6 L35.2 9.8 L39 11 L35.2 12.2 L34 16 L32.8 12.2 L29 11 L32.8 9.8 Z" fill="#f59e0b"\/><\/svg></div>
-      <h1>Merhaba! Ben ABAD Size nasıl yardımcı olabilirim?</h1>
+      <h1>Merhaba! Size nasıl yardımcı olabilirim?</h1>
       <p>Sohbet modunda sorularınızı sorun, Görsel Üret modunda hayal ettiğiniz görseli oluşturun.</p>
       <div class="suggestions">
         <span class="sug" onclick="suggest('Python nedir, nasıl öğrenebilirim?')">Python öğren</span>
@@ -541,7 +541,7 @@ function goHome() {
         <span class="sug" onclick="suggest('İstanbul için 3 günlük gezi planı yap')">İstanbul gezisi</span>
         <span class="sug" onclick="setModeAndSuggest('image','gün batımında İstanbul silüeti, dijital sanat')">🎨 Görsel üret</span>
       </div>
-    </div>\`;
+    </div>`;
   // Restore SVG icon
   const ph = document.getElementById('welcomeIconPlaceholder');
   if (ph) {
